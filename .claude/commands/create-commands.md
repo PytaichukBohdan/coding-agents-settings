@@ -326,7 +326,7 @@ Key Components:
 allowed-tools: Read, Write, Edit, Glob, Grep, MultiEdit
 description: Creates a concise engineering implementation plan based on user requirements and saves it to specs directory
 argument-hint: [user prompt]
-model: claude-sonnet-4-5-20250929
+model: opus
 ---
 
 # Quick Plan
@@ -504,7 +504,7 @@ PATH_TO_PLAN: $ARGUMENTS
 
 ```markdown
 ---
-model: claude-sonnet-4-5-20250929
+model: opus
 description: Build the codebase in parallel by delegating file creation to build-agents
 argument-hint: [path-to-plan]
 ---
