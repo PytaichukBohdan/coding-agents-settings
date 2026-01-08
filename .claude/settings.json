@@ -28,6 +28,10 @@
           {
             "type": "command",
             "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/pre_tool_use.py"
+          },
+          {
+            "type": "command",
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/send_event.py --source-app agent-experts --event-type PreToolUse --summarize"
           }
         ]
       }
@@ -39,6 +43,10 @@
           {
             "type": "command",
             "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/post_tool_use.py"
+          },
+          {
+            "type": "command",
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/send_event.py --source-app agent-experts --event-type PostToolUse --summarize"
           }
         ]
       }
@@ -49,7 +57,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/notification.py --notify"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/notification.py"
+          },
+          {
+            "type": "command",
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/send_event.py --source-app agent-experts --event-type Notification --summarize"
           }
         ]
       }
@@ -60,7 +72,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/stop.py --chat"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/stop.py"
+          },
+          {
+            "type": "command",
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/send_event.py --source-app agent-experts --event-type Stop --add-chat --summarize"
           }
         ]
       }
@@ -72,16 +88,10 @@
           {
             "type": "command",
             "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/subagent_stop.py"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
+          },
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/user_prompt_submit.py --log-only"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/send_event.py --source-app agent-experts --event-type SubagentStop --summarize"
           }
         ]
       }
@@ -92,17 +102,21 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/pre_compact.py"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/send_event.py --source-app agent-experts --event-type PreCompact --summarize"
           }
         ]
       }
     ],
-    "SessionStart": [
+    "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --add-context"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/user_prompt_submit.py --log-only --store-last-prompt --name-agent"
+          },
+          {
+            "type": "command",
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/send_event.py --source-app agent-experts --event-type UserPromptSubmit --summarize"
           }
         ]
       }

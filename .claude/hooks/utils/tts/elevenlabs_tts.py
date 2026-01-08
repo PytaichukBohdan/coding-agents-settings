@@ -14,19 +14,20 @@ from dotenv import load_dotenv
 
 def main():
     """
-    ElevenLabs Turbo v2.5 TTS Script
-    
-    Uses ElevenLabs' Turbo v2.5 model for fast, high-quality text-to-speech.
+    ElevenLabs Flash v2.5 TTS Script
+
+    Uses ElevenLabs' Flash v2.5 model for ultra-low latency text-to-speech (~75ms).
     Accepts optional text prompt as command-line argument.
-    
+
     Usage:
     - ./eleven_turbo_tts.py                    # Uses default text
     - ./eleven_turbo_tts.py "Your custom text" # Uses provided text
-    
+
     Features:
-    - Fast generation (optimized for real-time use)
+    - Ultra-low latency (~75ms - fastest model)
+    - Optimized for real-time and conversational use
     - High-quality voice synthesis
-    - Stable production model
+    - Supports 32 languages
     - Cost-effective for high-volume usage
     """
     
@@ -43,12 +44,12 @@ def main():
     
     try:
         from elevenlabs.client import ElevenLabs
-        from elevenlabs import play
+        from elevenlabs.play import play
         
         # Initialize client
         elevenlabs = ElevenLabs(api_key=api_key)
         
-        print("🎙️  ElevenLabs Turbo v2.5 TTS")
+        print("🎙️  ElevenLabs Flash v2.5 TTS")
         print("=" * 40)
         
         # Get text from command line argument or use default
@@ -65,7 +66,7 @@ def main():
             audio = elevenlabs.text_to_speech.convert(
                 text=text,
                 voice_id="WejK3H1m7MI9CHnIjW9K",  # Specified voice
-                model_id="eleven_turbo_v2_5",
+                model_id="eleven_flash_v2_5",
                 output_format="mp3_44100_128",
             )
             

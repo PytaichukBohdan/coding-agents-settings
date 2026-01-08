@@ -14,7 +14,6 @@ import random
 import subprocess
 from pathlib import Path
 from datetime import datetime
-from utils.constants import ensure_session_log_dir
 
 try:
     from dotenv import load_dotenv
@@ -66,7 +65,7 @@ def get_tts_script_path():
 def get_llm_completion_message():
     """
     Generate completion message using available LLM services.
-    Priority order: OpenAI > Anthropic > fallback to random message
+    Priority order: OpenAI > Anthropic > Ollama > fallback to random message
     
     Returns:
         str: Generated or fallback completion message
@@ -109,6 +108,22 @@ def get_llm_completion_message():
             except (subprocess.TimeoutExpired, subprocess.SubprocessError):
                 pass
     
+    # Try Ollama third (local LLM)
+    ollama_script = llm_dir / "ollama.py"
+    if ollama_script.exists():
+        try:
+            result = subprocess.run([
+                "uv", "run", str(ollama_script), "--completion"
+            ], 
+            capture_output=True,
+            text=True,
+            timeout=10
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return result.stdout.strip()
+        except (subprocess.TimeoutExpired, subprocess.SubprocessError):
+            pass
+    
     # Fallback to random predefined message
     messages = get_completion_messages()
     return random.choice(messages)
@@ -144,7 +159,7 @@ def main():
         # Parse command line arguments
         parser = argparse.ArgumentParser()
         parser.add_argument('--chat', action='store_true', help='Copy transcript to chat.json')
-        parser.add_argument('--tts', action='store_true', help='Enable TTS announcements')
+        parser.add_argument('--notify', action='store_true', help='Enable TTS completion announcement')
         args = parser.parse_args()
         
         # Read JSON input from stdin
@@ -154,12 +169,13 @@ def main():
         session_id = input_data.get("session_id", "")
         stop_hook_active = input_data.get("stop_hook_active", False)
 
-        # Ensure session log directory exists
-        log_dir = ensure_session_log_dir(session_id)
-        log_path = log_dir / "stop.json"
+        # Ensure log directory exists
+        log_dir = os.path.join(os.getcwd(), "logs")
+        os.makedirs(log_dir, exist_ok=True)
+        log_path = os.path.join(log_dir, "stop.json")
 
         # Read existing log data or initialize empty list
-        if log_path.exists():
+        if os.path.exists(log_path):
             with open(log_path, 'r') as f:
                 try:
                     log_data = json.load(f)
@@ -198,8 +214,8 @@ def main():
                 except Exception:
                     pass  # Fail silently
 
-        # Announce completion via TTS if --tts flag is set
-        if args.tts:
+        # Announce completion via TTS (only if --notify flag is set)
+        if args.notify:
             announce_completion()
 
         sys.exit(0)

@@ -1,3 +1,7 @@
+---
+description: Analyze repository structure and update all commands to work with this specific codebase
+---
+
 # Adapt Commands to Repository
 
 > Analyze the current repository structure and update all commands in `.claude/commands/` to work with this specific codebase. Use interactive prompts when uncertain.
@@ -5,6 +9,7 @@
 ## Instructions
 
 ### Phase 1: Discovery
+
 1. Run `git ls-files` to understand the project structure
 2. Read `README.md` and any documentation files (CONTRIBUTING.md, docs/*)
 3. Read config files: `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, etc.
@@ -23,31 +28,54 @@ For each of the following, attempt to auto-detect. If uncertain or multiple opti
 
 ### Phase 3: Update Commands (In Place)
 
-#### Update plan.md
-Using the Edit tool, update these sections:
-- `## Relevant Files` - Replace paths with discovered paths for this repo
+#### Update plan.md, plan_w_scouters.md, quick-plan.md
+
+Using the Edit tool, update these sections in each file:
+
+- `## Relevant Files` - Replace paths with discovered paths for this repo (if present)
 - `## Validation Commands` - Update test command (e.g., `cd <path> && <test_command>`)
 - Package manager references (change `uv add` if using different package manager)
 
-#### Update install.md
-Using the Edit tool, rewrite to:
-- Use correct package manager install commands for this repo
-- Remove repo-specific references (like env file copy scripts)
-- Add any setup steps discovered from README
+#### Update build.md
 
-#### Update start.md
 Using the Edit tool, rewrite to:
-- Use correct start/stop commands for this repo
-- Update or remove API endpoints section (or make generic: "See README for endpoints")
-- If no start scripts exist, provide instructions based on package.json or README
+
+- Use correct package manager commands for this repo
+- Update test/build commands based on discovered config
+- Update file paths to match repo structure
+
+#### Update fix.md
+
+Using the Edit tool, update to:
+
+- Reference correct file paths for the repo
+- Update any package manager or test commands
+
+#### Update review.md
+
+Using the Edit tool, update to:
+
+- Reference correct file paths and patterns for the repo
+- Update validation commands if present
 
 ### Phase 4: Preserve These Commands
-Do NOT modify: `prime.md`, `implement.md`, `commit.md`, `tools.md`, `adapt.md`
-These are already repository-agnostic.
+
+Do NOT modify these commands (they are repository-agnostic):
+
+- `prime.md`, `prime_cc.md`, `prime_specific_docs.md`
+- `all_tools.md`, `ping.md`
+- `question.md`, `question-w-mermaid-diagrams.md`
+- `meta_prompt.md`
+- `load_ai_docs.md`, `load_bundle.md`
+- `find_and_summarize.md`
+- `parallel_subagents.md`
+- All orchestration commands (`orch_*.md`)
+- `adapt.md` (this file)
 
 ## Report
 
 After completing adaptation, report:
+
 - Repository type and tech stack detected
 - Commands updated and key changes made
 - Any items that need manual review
