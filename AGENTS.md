@@ -24,13 +24,13 @@ Usage notes:
 <skill>
 <name>fork-terminal</name>
 <description>Fork a terminal session to a new terminal window. Use this when the user requests 'fork terminal' or 'create a new terminal' or 'new terminal: <command>' or 'fork session: <command>'.</description>
-<location>project</location>
+<location>.claude/skills/fork-terminal/</location>
 </skill>
 
 <skill>
 <name>meta-skill</name>
 <description>Creates new Agent Skills for AI Agents following best practices and documentation. Use when the user wants prompts 'create a new skill ...' or 'use your meta skill to ...'.</description>
-<location>project</location>
+<location>.claude/skills/meta-skill/</location>
 </skill>
 
 </available_skills>
