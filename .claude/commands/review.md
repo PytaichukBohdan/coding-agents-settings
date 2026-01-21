@@ -1,6 +1,6 @@
 ---
 allowed-tools: Write, Read, Bash, Grep, Glob
-description: Reviews completed work by analyzing git diffs and produces risk-tiered validation reports
+description: Use when you need to review completed work before merge or deployment
 argument-hint: [user prompt describing work], [path to plan file]
 model: opus
 ---
@@ -30,6 +30,55 @@ REVIEW_OUTPUT_DIRECTORY: `app_review/`
 - End every report with a clear PASS or FAIL verdict based on whether blockers exist.
 - Never make assumptions—if you can't verify something through git diff or file inspection, flag it as requiring manual review.
 - Be thorough but concise—engineers need actionable insights, not verbose commentary.
+
+## The Review Gate
+
+BEFORE classifying risk level for any issue:
+
+1. **IDENTIFY**: What specific code line/pattern is problematic?
+2. **EXPLAIN**: Why is it risky? (not just WHAT, but WHY)
+3. **EVIDENCE**: What could go wrong? Be specific.
+4. **RECOMMEND**: Provide actionable fix (not vague suggestions)
+
+If you can't explain the risk clearly: re-analyze before classifying.
+
+**No vague classifications:**
+- Don't say "might be a problem" - explain the specific failure mode
+- Don't say "looks fine" - explain what you verified
+- Don't trust test coverage numbers without reading tests
+- Evidence or it's not a valid review
+
+## Risk Classification Red Flags
+
+If any of these thoughts occur to you, STOP and reconsider:
+
+- Classifying as LOW without checking security implications
+- Missing edge cases in error handling review
+- Trusting test coverage numbers without reading tests
+- "Looks fine" without evidence
+- Assuming "tests pass" means no issues
+- Skipping review of "trivial" changes
+- Rubber-stamping because "author is experienced"
+
+**If any of these apply: STOP. Analyze more thoroughly.**
+
+## Common Rationalizations
+
+| Excuse | Reality |
+|--------|---------|
+| "Tests pass so it's fine" | Tests don't catch all issues. Review manually. |
+| "Author is experienced" | Everyone makes mistakes. Review thoroughly. |
+| "It's just a refactor" | Refactors introduce subtle bugs. Extra scrutiny. |
+| "I already reviewed similar code" | Each review is independent. Check this code. |
+| "It's a small change" | Small changes cause big bugs. Full review. |
+
+## Announcement (MANDATORY)
+
+Before starting review, announce:
+
+"I'm using /review to analyze the completed work. I will examine git diffs thoroughly and classify all issues by risk tier with evidence."
+
+This creates commitment. Skipping this step = likely to skip other steps.
 
 ## Workflow
 

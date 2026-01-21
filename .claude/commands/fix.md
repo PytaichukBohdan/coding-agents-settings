@@ -1,6 +1,6 @@
 ---
 allowed-tools: Write, Read, Bash, Grep, Glob, Edit, Task
-description: Fix issues identified in a code review report by implementing recommended solutions
+description: Use when you have a code review report and need to fix identified issues
 argument-hint: [user prompt describing work], [path to plan file], [path to review report]
 model: opus
 ---
@@ -31,6 +31,52 @@ FIX_OUTPUT_DIRECTORY: `app_fix_reports/`
 - Create a fix report documenting what was changed and how each issue was resolved.
 - If a recommended solution doesn't work, try alternative solutions or document why it couldn't be fixed.
 - Be thorough but efficient—fix issues correctly the first time.
+
+## The Iron Law
+
+```
+NO FIX CLAIMED WITHOUT VERIFICATION
+```
+
+Claiming a fix without testing it? That's not a fix.
+
+**No exceptions:**
+- Don't claim "should be fixed" - prove it's fixed
+- Don't move to next issue without verifying current fix
+- Don't skip validation for "obvious" fixes
+- Fixed means VERIFIED fixed
+
+## Red Flags - STOP Fixing
+
+If any of these thoughts occur to you, STOP and reconsider:
+
+- Moving to next issue without verifying current fix
+- "This fix is obvious, no need to test"
+- Skipping validation because "it's similar to previous fix"
+- Claiming fix without running verification
+- "I'll verify all fixes at the end"
+- Making changes beyond the recommended solution without reason
+- Not reading the affected file context before fixing
+
+**If any of these apply: STOP. Verify current fix before proceeding.**
+
+## Common Rationalizations
+
+| Excuse | Reality |
+|--------|---------|
+| "The fix is obvious" | Obvious fixes fail. Verify anyway. |
+| "Same pattern as before" | Each fix is independent. Test it. |
+| "I'll test everything at end" | Issues compound. Test each fix immediately. |
+| "The review solution is correct" | Recommendations can be wrong. Verify outcomes. |
+| "Just a one-line change" | One-line changes break things. Full verification. |
+
+## Announcement (MANDATORY)
+
+Before starting work, announce:
+
+"I'm using /fix to address issues from the review report at [path]. I will fix issues by priority (Blockers first) and verify each fix before proceeding."
+
+This creates commitment. Skipping this step = likely to skip other steps.
 
 ## Workflow
 

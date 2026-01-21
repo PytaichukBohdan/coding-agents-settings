@@ -33,6 +33,24 @@ Usage notes:
 <location>.claude/skills/meta-skill/</location>
 </skill>
 
+<skill>
+<name>systematic-debugging</name>
+<description>Enforces a methodical approach to debugging that prevents trial-and-error fixes. Use when investigating bugs, errors, or unexpected behavior in code.</description>
+<location>.claude/skills/systematic-debugging/</location>
+</skill>
+
+<skill>
+<name>test-driven-development</name>
+<description>Enforces the test-driven development methodology when implementing features or bugfixes. Use when writing any new code, fixing bugs, or implementing features that need tests.</description>
+<location>.claude/skills/test-driven-development/</location>
+</skill>
+
+<skill>
+<name>verification-before-completion</name>
+<description>Enforces evidence-based verification before claiming any task is complete. Use when finishing any implementation, fix, or task that requires proof of completion.</description>
+<location>.claude/skills/verification-before-completion/</location>
+</skill>
+
 </available_skills>
 <!-- SKILLS_TABLE_END -->
 

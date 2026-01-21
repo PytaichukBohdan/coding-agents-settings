@@ -1,5 +1,5 @@
 ---
-description: Creates a concise engineering implementation plan based on user requirements and saves it to specs directory
+description: Use when you need to plan implementation of a feature, fix, or refactor before writing code
 argument-hint: [user prompt]
 ---
 
@@ -14,7 +14,13 @@ PLAN_OUTPUT_DIRECTORY: `specs/`
 
 ## Instructions
 
-- IMPORTANT: If no `USER_PROMPT` is provided, stop and ask the user to provide it.
+- IMPORTANT: If no `USER_PROMPT` is provided, STOP immediately and ask.
+
+  **No exceptions:**
+  - Don't infer the prompt from context
+  - Don't use previous conversation as the prompt
+  - Don't proceed with "I'll ask later if needed"
+  - STOP means STOP
 - Carefully analyze the user's requirements provided in the USER_PROMPT variable
 - Determine the task type (chore|feature|refactor|fix|enhancement) and complexity (simple|medium|complex)
 - Think deeply (ultrathink) about the best approach to implement the requested functionality or solve the problem
@@ -27,6 +33,63 @@ PLAN_OUTPUT_DIRECTORY: `specs/`
 - Include code examples or pseudo-code where appropriate to clarify complex concepts
 - Consider edge cases, error handling, and scalability concerns
 - Use `AskUserQuestion` tool ONLY when there's genuine ambiguity or a critical decision point - avoid asking questions just to appear thorough. If the requirements are clear from the USER_PROMPT and codebase exploration, proceed directly with planning.
+
+## The Iron Law
+
+```
+NO IMPLEMENTATION WITHOUT A COMPLETE PLAN FIRST
+```
+
+A plan is complete when another developer could implement it without asking questions.
+
+Incomplete plan? Don't proceed. Add details until complete.
+
+**No exceptions:**
+- Don't skip codebase exploration "because it seems simple"
+- Don't assume you know the architecture
+- Don't proceed with "I'll figure it out as I go"
+- Incomplete means INCOMPLETE - add more detail
+
+## Red Flags - STOP Planning
+
+If any of these thoughts occur to you, STOP and reconsider:
+
+- About to write code without understanding requirements
+- Skipping codebase exploration "because it's simple"
+- Assuming you know the architecture
+- "I'll just start and figure it out"
+- "The user will figure out the details"
+- Creating a plan without validation commands
+
+**If any of these apply: STOP. Re-read the workflow.**
+
+## The Planning Gate
+
+BEFORE saving the plan:
+1. **Read requirements again** - did you address everything?
+2. **Check relevant files** - did you explore enough?
+3. **Review validation commands** - are they specific and runnable?
+4. **Verify completeness** - could another developer implement this without questions?
+
+If ANY answer is "no": continue planning, don't save yet.
+
+## Common Rationalizations
+
+| Excuse | Reality |
+|--------|---------|
+| "This is a simple task" | Simple tasks have hidden complexity. Plan thoroughly. |
+| "I already know this codebase" | Every session starts fresh. Explore anyway. |
+| "The user is in a hurry" | Rushed plans create more delays. Take time. |
+| "I'll ask questions later" | Ask now. Blocked implementation wastes more time. |
+| "The requirements are clear enough" | Clear to you ≠ complete. Verify all edge cases. |
+
+## Announcement (MANDATORY)
+
+Before starting work, announce:
+
+"I'm using /plan to create an implementation plan for [specific purpose]. I will follow the workflow exactly."
+
+This creates commitment. Skipping this step = likely to skip other steps.
 
 ## Workflow
 
