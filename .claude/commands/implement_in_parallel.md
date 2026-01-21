@@ -1,10 +1,10 @@
 ---
 model: opus
-description: Build the codebase in parallel by delegating file creation to build-agents
+description: Implement the codebase in parallel by delegating file creation to build-agents
 argument-hint: [path-to-plan]
 ---
 
-# Build in Parallel
+# Implement in Parallel
 
 Follow the `Workflow` to implement the `PATH_TO_PLAN` by delegating individual file creation to specialized build-agents in parallel, then `Report` the completed work.
 

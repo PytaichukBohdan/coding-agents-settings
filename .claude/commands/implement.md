@@ -1,9 +1,9 @@
 ---
-description: Build the codebase based on the plan
+description: Implement the codebase based on the plan
 argument-hint: [path-to-plan]
 ---
 
-# Build
+# Implement
 
 Follow the `Workflow` to implement the `PATH_TO_PLAN` then `Report` the completed work.
 

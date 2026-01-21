@@ -36,7 +36,7 @@ Using the Edit tool, update these sections in each file:
 - `## Validation Commands` - Update test command (e.g., `cd <path> && <test_command>`)
 - Package manager references (change `uv add` if using different package manager)
 
-#### Update build.md
+#### Update implement.md
 
 Using the Edit tool, rewrite to:
 

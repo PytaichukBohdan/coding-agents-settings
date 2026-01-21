@@ -463,15 +463,15 @@ Key Components:
 
 ---
 
-#### File: `.claude/commands/build.md`
+#### File: `.claude/commands/implement.md`
 
 ```markdown
 ---
-description: Build the codebase based on the plan
+description: Implement the codebase based on the plan
 argument-hint: [path-to-plan]
 ---
 
-# Build
+# Implement Commands
 
 Follow the `Workflow` to implement the `PATH_TO_PLAN` then `Report` the completed work.
 
@@ -500,7 +500,7 @@ PATH_TO_PLAN: $ARGUMENTS
 
 ---
 
-#### File: `.claude/commands/build_in_parallel.md`
+#### File: `.claude/commands/implement_in_parallel.md`
 
 ```markdown
 ---
@@ -1516,7 +1516,7 @@ Using the Edit tool, update these sections in each file:
 - `## Validation Commands` - Update test command (e.g., `cd <path> && <test_command>`)
 - Package manager references (change `uv add` if using different package manager)
 
-#### Update build.md
+#### Update implement.md
 
 Using the Edit tool, rewrite to:
 
