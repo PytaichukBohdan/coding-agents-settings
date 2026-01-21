@@ -1,6 +1,6 @@
 ---
 model: opus
-description: Implement the codebase in parallel by delegating file creation to build-agents
+description: Use when you have a plan file and need to implement it using parallel build-agents for efficiency
 argument-hint: [path-to-plan]
 ---
 
@@ -30,11 +30,84 @@ The build-agent sub-agent is located at `.claude/agents/build-agent.md` and is s
   - Dependencies and imports needed
   - Example code or similar files to reference
 
+## The Iron Law
+
+```
+NO COMPLETION CLAIM WITHOUT VERIFIED EVIDENCE
+```
+
+Claiming completion without running validation? Start over.
+
+**No exceptions:**
+- Don't claim "should work" - prove it works
+- Don't trust individual agent reports alone - run project-wide checks
+- Don't skip final verification "this once"
+- Evidence or it didn't happen
+
+## Verification Gate (MANDATORY)
+
+BEFORE claiming implementation is complete:
+
+1. **IDENTIFY**: What validation commands prove completion?
+2. **RUN**: Execute EVERY validation command (fresh, complete)
+3. **READ**: Full output - check exit codes, count failures
+4. **VERIFY**: Does ALL output confirm success?
+   - If NO: Fix issues, re-run, repeat
+   - If YES: Include evidence in report
+5. **ONLY THEN**: Claim completion
+
+Skip any step = incomplete implementation. Return to Step 1.
+
+**Evidence required for completion claim:**
+- Validation command output (actual output, not "it passed")
+- Test results with pass/fail counts
+- Git diff summary
+- All build-agent reports reviewed
+
+## Red Flags - STOP Implementation
+
+If any of these thoughts occur to you, STOP and reconsider:
+
+- Launching agents without reading the plan thoroughly
+- Skipping context gathering "to save time"
+- "I'll verify after all agents finish"
+- Trusting agent reports without project-wide checks
+- "Just a small file, no need for full spec"
+- Claiming completion before final verification
+- Skipping failed agent re-runs
+
+**If any of these apply: STOP. Follow the workflow properly.**
+
+## Common Rationalizations
+
+| Excuse | Reality |
+|--------|---------|
+| "Agent reports look good" | Individual success ≠ integrated success. Run full checks. |
+| "All files were created" | Created ≠ working. Verify integration. |
+| "Tests were passing earlier" | Previous runs prove nothing. Run again. |
+| "Small change, skip the spec" | Agents need full context. Always provide specs. |
+| "I'll fix integration issues later" | Later creates more work. Fix now. |
+
+## Announcement (MANDATORY)
+
+Before starting work, announce:
+
+"I'm using /implement_in_parallel to implement the plan at [path]. I will provide complete specifications to each build-agent and verify all work before claiming completion."
+
+This creates commitment. Skipping this step = likely to skip other steps.
+
 ## Workflow
 
 ### Step 1: Read and Analyze the Plan
 
-- If no `PATH_TO_PLAN` is provided, STOP immediately and ask the user to provide it
+- If no `PATH_TO_PLAN` is provided, STOP immediately and ask the user to provide it.
+
+  **No exceptions:**
+  - Don't infer the plan from conversation
+  - Don't create an ad-hoc plan
+  - Don't proceed without an explicit path
+  - STOP means STOP
+
 - Read the plan at `PATH_TO_PLAN`
 - Analyze the plan thoroughly to understand:
   - All files that need to be created or modified
