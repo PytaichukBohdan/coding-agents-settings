@@ -219,27 +219,6 @@ git push
 
 **Note:** Team members will get the skill automatically when they pull the latest changes.
 
-#### Step 9: Register in AGENTS.md
-
-Add the new skill to the `AGENTS.md` file so it appears in the available skills list:
-
-1. Open `AGENTS.md` in the project root
-2. Find the `<available_skills>` section (between `<!-- SKILLS_TABLE_START -->` and `<!-- SKILLS_TABLE_END -->`)
-3. Add a new `<skill>` entry before the closing `</available_skills>` tag:
-
-```xml
-<skill>
-<name>your-skill-name</name>
-<description>Your skill description from the YAML frontmatter. Include what it does AND when to use it.</description>
-<location>.claude/skills/your-skill-name/</location>
-</skill>
-```
-
-**Important:**
-- Use the exact `name` from your SKILL.md frontmatter
-- Copy the `description` from your SKILL.md frontmatter (keep it in third person)
-- Set `location` to the relative path: `.claude/skills/<skill-name>/`
-
 ### Best Practices Summary
 
 **Description writing:**
