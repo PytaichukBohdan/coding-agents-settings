@@ -34,7 +34,7 @@ def prompt_llm(prompt_text):
         client = anthropic.Anthropic(api_key=api_key)
 
         message = client.messages.create(
-            model="claude-haiku-4-5-20251001",  # Fastest Anthropic model
+            model="claude-haiku-4-5-20251001",  # Haiku 4.5 - Fastest, most efficient model (TOP PRIORITY)
             max_tokens=100,
             temperature=0.3,
             messages=[{"role": "user", "content": prompt_text}],
@@ -57,14 +57,14 @@ def generate_completion_message():
 
     if engineer_name:
         name_instruction = f"Sometimes (about 30% of the time) include the engineer's name '{engineer_name}' in a natural way."
-        examples = f"""Examples of the style: 
+        examples = f"""Examples of the style:
 - Standard: "Work complete!", "All done!", "Task finished!", "Ready for your next move!"
 - Personalized: "{engineer_name}, all set!", "Ready for you, {engineer_name}!", "Complete, {engineer_name}!", "{engineer_name}, we're done!" """
     else:
         name_instruction = ""
         examples = """Examples of the style: "Work complete!", "All done!", "Task finished!", "Ready for your next move!" """
 
-    prompt = f"""Generate a short, friendly completion message for when an AI coding assistant finishes a task. 
+    prompt = f"""Generate a short, concise, friendly completion message for when an AI coding assistant finishes a task.
 
 Requirements:
 - Keep it under 10 words
@@ -92,99 +92,40 @@ Generate ONE completion message:"""
 
 def generate_agent_name():
     """
-    Generate a one-word agent name using Anthropic.
+    Generate a single-word agent name using Anthropic LLM.
 
     Returns:
-        str: A single-word agent name, or fallback name if error
+        str: A single alphanumeric agent name, or None if error
     """
-    import random
-
-    # Example names to guide generation
-    example_names = [
-        "Phoenix",
-        "Sage",
-        "Nova",
-        "Echo",
-        "Atlas",
-        "Cipher",
-        "Nexus",
-        "Oracle",
-        "Quantum",
-        "Zenith",
-        "Aurora",
-        "Vortex",
-        "Nebula",
-        "Catalyst",
-        "Prism",
-        "Axiom",
-        "Helix",
-        "Flux",
-        "Synth",
-        "Vertex",
-    ]
-
-    # If no API key, return random fallback
-    if not os.getenv("ANTHROPIC_API_KEY"):
-        return random.choice(example_names)
-
-    # Create examples string
-    examples_str = ", ".join(example_names[:10])  # Use first 10 as examples
-
-    prompt_text = f"""Generate exactly ONE unique agent/assistant name.
+    prompt = """Generate a single creative agent name for an AI coding assistant.
 
 Requirements:
-- Single word only (no spaces, hyphens, or punctuation)
-- Abstract and memorable
-- Professional sounding
-- Easy to pronounce
-- Similar style to these examples: {examples_str}
+- MUST be a single word (no spaces)
+- MUST be alphanumeric only (letters and numbers, no special characters)
+- Make it memorable and related to coding/tech/AI
+- Keep it between 4-12 characters
+- Examples: CodeNinja, ByteBot, PixelPro, NexusAI, SwiftDev
+- Do NOT include quotes, formatting, or explanations
+- Return ONLY the agent name
 
-Generate a NEW name (not from the examples). Respond with ONLY the name, nothing else.
+Generate ONE agent name:"""
 
-Name:"""
+    response = prompt_llm(prompt)
 
-    try:
-        # Use faster Haiku model with lower tokens for name generation
-        load_dotenv()
-        api_key = os.getenv("ANTHROPIC_API_KEY")
-        if not api_key:
-            raise Exception("No API key")
+    # Clean up response - remove quotes and extra formatting
+    if response:
+        response = response.strip().strip('"').strip("'").strip()
+        # Take first word if multiple words
+        response = response.split()[0] if response else None
+        # Validate it's alphanumeric
+        if response and response.isalnum():
+            return response
 
-        import anthropic
-
-        client = anthropic.Anthropic(api_key=api_key)
-
-        message = client.messages.create(
-            model="claude-haiku-4-5-20251001",  # Fast model
-            max_tokens=20,
-            temperature=0.3,
-            messages=[{"role": "user", "content": prompt_text}],
-        )
-
-        # Extract and clean the name
-        name = message.content[0].text.strip()
-        # Ensure it's a single word
-        name = name.split()[0] if name else "Agent"
-        # Remove any punctuation
-        name = "".join(c for c in name if c.isalnum())
-        # Capitalize first letter
-        name = name.capitalize() if name else "Agent"
-
-        # Validate it's not empty and reasonable length
-        if name and 3 <= len(name) <= 20:
-            return name
-        else:
-            raise Exception("Invalid name generated")
-
-    except Exception:
-        # Return random fallback name
-        return random.choice(example_names)
+    return None
 
 
 def main():
     """Command line interface for testing."""
-    import json
-
     if len(sys.argv) > 1:
         if sys.argv[1] == "--completion":
             message = generate_completion_message()
@@ -193,9 +134,11 @@ def main():
             else:
                 print("Error generating completion message")
         elif sys.argv[1] == "--agent-name":
-            # Generate agent name (no input needed)
-            name = generate_agent_name()
-            print(name)
+            agent_name = generate_agent_name()
+            if agent_name:
+                print(agent_name)
+            else:
+                print("Error generating agent name")
         else:
             prompt_text = " ".join(sys.argv[1:])
             response = prompt_llm(prompt_text)

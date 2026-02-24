@@ -1,11 +1,9 @@
 ---
-name: creating-new-skills
-description: Creates new Agent Skills for AI Agents following best practices and documentation. Use when the user wants prompts 'create a new skill ...' or 'use your meta skill to ...'.
+name: Create New Skills
+description: Creates new Agent Skills for Claude Code following best practices and documentation. Use when the user wants to create a new skill, extend Claude's capabilities, or package domain expertise into a reusable skill.
 ---
 
-# Purpose
-
-Create new Agent Skills for AI Agents by following a structured workflow based on best practices and comprehensive documentation.
+# Create New Skills
 
 ## Instructions
 
@@ -25,11 +23,6 @@ This skill helps you create new Agent Skills for Claude Code. Before starting, r
 - Instructions that Claude loads on-demand when relevant
 - Optional supporting files (scripts, documentation, templates)
 - Like an onboarding guide for a new team member
-
-**Three Sources of Skills:**
-1. **Personal Skills**: `~/.claude/skills/` - Available across all your projects
-2. **Project Skills**: `.claude/skills/` - Shared with team via git
-3. **Plugin Skills**: Bundled with Claude Code plugins, automatically available when installed
 
 **Progressive Disclosure (3 Levels):**
 1. **Metadata** (always loaded): `name` and `description` in YAML frontmatter
@@ -59,11 +52,9 @@ mkdir -p .claude/skills/<skill-name>
 ```
 
 **Naming conventions:**
-- **Use gerund form** (verb + -ing): `processing-pdfs`, `analyzing-spreadsheets`, `managing-databases`
-- Must contain only **lowercase letters, numbers, and hyphens**
-- Maximum 64 characters
-- Cannot contain XML tags or reserved words ("anthropic", "claude")
-- Avoid generic names like `helper`, `utils`, `tools`
+- Use lowercase with hyphens (e.g., `pdf-processing`, `data-analysis`)
+- Be descriptive but concise
+- Avoid generic names
 
 **Note:** Project skills (`.claude/skills/`) are automatically shared with your team via git. For personal skills only you use, create in `~/.claude/skills/` instead.
 
@@ -86,17 +77,11 @@ description: Brief description of what this Skill does and when to use it
 ```
 
 **Frontmatter Requirements:**
-- `name`: Required
-  - Max 64 characters
-  - **Lowercase letters, numbers, and hyphens only**
-  - Cannot contain XML tags or reserved words ("anthropic", "claude")
-  - Use gerund form: `processing-pdfs`, `analyzing-data`
+- `name`: Required, max 64 characters
 - `description`: Required, max 1024 characters
-  - **MUST be written in third person** (critical for discovery)
   - Include BOTH what it does AND when to use it
   - Mention key trigger words/phrases
   - Be specific, not vague
-  - Cannot contain XML tags
 
 **Optional Frontmatter (Claude Code only):**
 - `allowed-tools`: Restrict which tools Claude can use (e.g., `Read, Grep, Glob`)
@@ -115,9 +100,6 @@ description: Brief description of what this Skill does and when to use it
 - Include code blocks with bash commands
 - Reference supporting files with relative links: `[reference.md](reference.md)`
 - Keep focused on one capability
-- **Keep SKILL.md body under 500 lines** for optimal performance
-- **Avoid deeply nested references** - keep references one level deep from SKILL.md
-- For files over 100 lines, include a table of contents at the top
 
 **Example workflow format:**
 ```markdown
@@ -224,15 +206,11 @@ git push
 **Description writing:**
 - ✅ "Transcribes audio/video files to text using Fireworks API. Use when user asks to transcribe, convert speech to text, or needs transcripts."
 - ❌ "Helps with audio"
-- **Always write in third person** - descriptions are injected into system prompt
-- ✅ "Processes Excel files and generates reports"
-- ❌ "I can help you process Excel files"
 
 **Instruction organization:**
-- Keep SKILL.md body under 500 lines
+- Keep main instructions focused (under 5k tokens ideal)
 - Split complex content into linked files
 - Use progressive disclosure for optional/advanced content
-- Keep references one level deep from SKILL.md
 
 **Skill scope:**
 - One skill = one capability or workflow
@@ -241,19 +219,8 @@ git push
 
 **File references:**
 - Use relative paths: `[file.md](file.md)` not absolute paths
-- **Always use forward slashes** (Unix style): `scripts/helper.py` ✓
-- NOT Windows style: `scripts\helper.py` ✗
 - Reference scripts with full path from skill root
 - Make it clear when Claude should read vs execute files
-
-**Degrees of Freedom:**
-- **High freedom** (text instructions): When multiple approaches are valid
-- **Medium freedom** (pseudocode/templates): When a preferred pattern exists
-- **Low freedom** (specific scripts): When operations are fragile or consistency is critical
-
-**MCP Tool References:**
-- Use fully qualified names: `ServerName:tool_name`
-- Example: `BigQuery:bigquery_schema`, `GitHub:create_issue`
 
 ### Common Patterns from Existing Skills
 
@@ -297,7 +264,7 @@ You would:
 4. Write SKILL.md with:
    ```yaml
    ---
-   name: reviewing-python-code
+   name: Python Code Review
    description: Reviews Python code for PEP 8 compliance, security issues, and performance. Use when reviewing Python code, checking code quality, or analyzing Python files.
    allowed-tools: Read, Grep, Glob
    ---

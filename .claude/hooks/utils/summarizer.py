@@ -3,125 +3,66 @@
 # requires-python = ">=3.8"
 # dependencies = [
 #     "anthropic",
+#     "python-dotenv",
 # ]
 # ///
 
-"""
-Event summarizer for Claude Desktop Hooks
-"""
-
 import json
-import os
-import sys
+from typing import Optional, Dict, Any
+from .llm.anth import prompt_llm
 
 
-def generate_event_summary(event_data):
+def generate_event_summary(event_data: Dict[str, Any]) -> Optional[str]:
     """
-    Generate a natural language summary of the event using Anthropic's API.
-    
+    Generate a concise one-sentence summary of a hook event for engineers.
+
     Args:
-        event_data: Dictionary containing the event information
-        
+        event_data: The hook event data containing event_type, payload, etc.
+
     Returns:
-        str: Natural language summary of the event, or None if error
+        str: A one-sentence summary, or None if generation fails
     """
-    # Extract key information from event
-    event_type = event_data.get('hook_event_type', 'Unknown')
-    session_id = event_data.get('session_id', 'Unknown')
-    source_app = event_data.get('source_app', 'Unknown')
-    payload = event_data.get('payload', {})
-    
-    # Build context for summary
-    context_parts = []
-    
-    if event_type == 'PreToolUse' or event_type == 'PostToolUse':
-        tool_name = payload.get('tool_name', 'Unknown')
-        tool_input = payload.get('tool_input', {})
-        context_parts.append(f"Tool: {tool_name}")
-        
-        # Add tool-specific context
-        if tool_name == 'Bash':
-            command = tool_input.get('command', '')
-            if command:
-                context_parts.append(f"Command: {command[:100]}...")
-        elif tool_name in ['Read', 'Edit', 'Write']:
-            file_path = tool_input.get('file_path', '')
-            if file_path:
-                context_parts.append(f"File: {file_path}")
-    
-    elif event_type == 'UserPromptSubmit':
-        prompt = payload.get('prompt', '')
-        if prompt:
-            context_parts.append(f"Prompt: {prompt[:100]}...")
-    
-    elif event_type == 'Notification':
-        message = payload.get('message', '')
-        if message:
-            context_parts.append(f"Message: {message}")
-    
-    # Create prompt for summary
-    context = " | ".join(context_parts) if context_parts else "No specific context"
-    
-    prompt = f"""Summarize this Claude Desktop event in one concise sentence:
+    event_type = event_data.get("hook_event_type", "Unknown")
+    payload = event_data.get("payload", {})
+
+    # Convert payload to string representation
+    payload_str = json.dumps(payload, indent=2)
+    if len(payload_str) > 1000:
+        payload_str = payload_str[:1000] + "..."
+
+    prompt = f"""Generate a one-sentence summary of this Claude Code hook event payload for an engineer monitoring the system.
 
 Event Type: {event_type}
-App: {source_app}
-Session: {session_id}
-Context: {context}
+Payload:
+{payload_str}
 
-Write a brief, natural language summary that captures what happened."""
+Requirements:
+- ONE sentence only (no period at the end)
+- Focus on the key action or information in the payload
+- Be specific and technical
+- Keep under 15 words
+- Use present tense
+- No quotes or formatting
+- Return ONLY the summary text
 
-    # Get API key
-    api_key = os.getenv('ANTHROPIC_API_KEY')
-    if not api_key:
-        return None
-    
-    try:
-        import anthropic
-        
-        client = anthropic.Anthropic(api_key=api_key)
-        
-        message = client.messages.create(
-            model="claude-haiku-4-5-20251001",  # Fast model for summaries
-            max_tokens=50,
-            temperature=0.3,
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
-        )
-        
-        return message.content[0].text.strip()
-        
-    except Exception:
-        return None
+Examples:
+- Reads configuration file from project root
+- Executes npm install to update dependencies
+- Searches web for React documentation
+- Edits database schema to add user table
+- Agent responds with implementation plan
 
+Generate the summary based on the payload:"""
 
-def main():
-    """Command line interface for testing."""
-    if len(sys.argv) > 1:
-        # Read event data from file
-        event_file = sys.argv[1]
-        try:
-            with open(event_file, 'r') as f:
-                event_data = json.load(f)
-            
-            summary = generate_event_summary(event_data)
-            if summary:
-                print(summary)
-            else:
-                print("Failed to generate summary")
-        except Exception as e:
-            print(f"Error: {e}")
-    else:
-        # Read from stdin
-        try:
-            event_data = json.load(sys.stdin)
-            summary = generate_event_summary(event_data)
-            if summary:
-                print(summary)
-        except Exception:
-            pass
+    summary = prompt_llm(prompt)
 
+    # Clean up the response
+    if summary:
+        summary = summary.strip().strip('"').strip("'").strip(".")
+        # Take only the first line if multiple
+        summary = summary.split("\n")[0].strip()
+        # Ensure it's not too long
+        if len(summary) > 100:
+            summary = summary[:97] + "..."
 
-if __name__ == "__main__":
-    main()
+    return summary

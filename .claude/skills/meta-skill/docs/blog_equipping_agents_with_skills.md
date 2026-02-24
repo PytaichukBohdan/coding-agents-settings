@@ -3,8 +3,6 @@ Engineering at Anthropic
 Equipping agents for the real world with Agent Skills
 Published Oct 16, 2025
 
-> **Note**: This is an archived copy of the Anthropic engineering blog post. For the latest technical requirements (including naming conventions, frontmatter constraints, and best practices), refer to the official documentation files in this directory.
-
 Claude is powerful, but real work requires procedural knowledge and organizational context. Introducing Agent Skills, a new way to build specialized agents using files and folders.
 
 As model capabilities improve, we can now build general-purpose agents that interact with full-fledged computing environments. Claude Code, for example, can accomplish complex tasks across domains using local code execution and filesystems. But as these agents become more powerful, we need more composable, scalable, and portable ways to equip them with domain-specific expertise.
@@ -76,34 +74,7 @@ Looking further ahead, we hope to enable agents to create, edit, and evaluate Sk
 
 Skills are a simple concept with a correspondingly simple format. This simplicity makes it easier for organizations, developers, and end users to build customized agents and give them new capabilities.
 
-We're excited to see what people build with Skills. Get started today by checking out our Skills docs and cookbook.
+We’re excited to see what people build with Skills. Get started today by checking out our Skills docs and cookbook.
 
 Acknowledgements
 Written by Barry Zhang, Keith Lazuka, and Mahesh Murag, who all really like folders. Special thanks to the many others across Anthropic who championed, supported, and built Skills.
-
----
-
-## Key Updates Since Publication
-
-The following technical requirements have been clarified since this blog post:
-
-**Naming conventions:**
-- `name` field must use **lowercase letters, numbers, and hyphens only**
-- Use gerund form (verb + -ing): `processing-pdfs`, `analyzing-data`
-- Cannot contain reserved words ("anthropic", "claude")
-
-**Description requirements:**
-- **Must be written in third person** (critical for discovery)
-- Cannot contain XML tags
-- Include both what the Skill does AND when to use it
-
-**Best practices:**
-- Keep SKILL.md body under 500 lines
-- Avoid deeply nested references - keep one level deep
-- Always use forward slashes for file paths
-- Test with multiple models (Haiku, Sonnet, Opus)
-
-**Additional Skill sources:**
-- Plugin Skills (bundled with Claude Code plugins) are now available
-
-For complete current documentation, see `claude_code_agent_skills.md` in this directory.

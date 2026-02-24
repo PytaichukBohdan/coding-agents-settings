@@ -7,7 +7,7 @@ This guide shows you how to create, use, and manage Agent Skills in Claude Code.
 ## Prerequisites
 
 * Claude Code version 1.0 or later
-* Basic familiarity with [Claude Code](https://code.claude.com/docs/en/quickstart)
+* Basic familiarity with [Claude Code](/en/docs/claude-code/quickstart)
 
 ## What are Agent Skills?
 
@@ -22,9 +22,11 @@ Agent Skills package expertise into discoverable capabilities. Each Skill consis
 * Reduce repetitive prompting
 * Compose multiple Skills for complex tasks
 
-Learn more in the [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview).
+Learn more in the [Agent Skills overview](/en/docs/agents-and-tools/agent-skills/overview).
 
-> **Note**: For a deep dive into the architecture and real-world applications of Agent Skills, read our engineering blog: [Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills).
+<Note>
+  For a deep dive into the architecture and real-world applications of Agent Skills, read our engineering blog: [Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills).
+</Note>
 
 ## Create a Skill
 
@@ -62,15 +64,15 @@ Project Skills are checked into git and automatically available to team members.
 
 ### Plugin Skills
 
-Skills can also come from [Claude Code plugins](https://code.claude.com/docs/en/plugins). Plugins may bundle Skills that are automatically available when the plugin is installed. These Skills work the same way as personal and project Skills.
+Skills can also come from [Claude Code plugins](/en/docs/claude-code/plugins). Plugins may bundle Skills that are automatically available when the plugin is installed. These Skills work the same way as personal and project Skills.
 
 ## Write SKILL.md
 
 Create a `SKILL.md` file with YAML frontmatter and Markdown content:
 
-```yaml
+```yaml  theme={null}
 ---
-name: your-skill-name
+name: Your Skill Name
 description: Brief description of what this Skill does and when to use it
 ---
 
@@ -83,29 +85,9 @@ Provide clear, step-by-step guidance for Claude.
 Show concrete examples of using this Skill.
 ```
 
-### Frontmatter Requirements
+The `description` field is critical for Claude to discover when to use your Skill. It should include both what the Skill does and when Claude should use it.
 
-| Field | Required | Constraints |
-|-------|----------|-------------|
-| `name` | Yes | Max 64 characters. **Lowercase letters, numbers, and hyphens only**. Cannot contain XML tags or reserved words ("anthropic", "claude"). Use gerund form: `processing-pdfs`, `analyzing-data`. |
-| `description` | Yes | Max 1024 characters. **Must be written in third person** (critical for discovery). Cannot contain XML tags. Include both what it does AND when to use it. |
-| `allowed-tools` | No | Comma-separated list of tools (Claude Code only). E.g., `Read, Grep, Glob` |
-
-### Description Best Practices
-
-The `description` field is critical for Claude to discover when to use your Skill.
-
-**Good (third person, specific):**
-```yaml
-description: Extracts text and tables from PDF files, fills forms, and merges documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
-```
-
-**Bad (first/second person, vague):**
-```yaml
-description: I can help you with documents
-```
-
-See the [best practices guide](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) for complete authoring guidance.
+See the [best practices guide](/en/docs/agents-and-tools/agent-skills/best-practices) for complete authoring guidance.
 
 ## Add supporting files
 
@@ -219,22 +201,21 @@ Claude autonomously decides to use your Skill if it matches the request—you do
 
 If Claude doesn't use your Skill, check these common issues:
 
-### Make description specific and third person
+### Make description specific
 
-**Too vague / wrong person**:
+**Too vague**:
 
-```yaml
+```yaml  theme={null}
 description: Helps with documents
-description: I can help you process files
 ```
 
-**Specific and third person**:
+**Specific**:
 
-```yaml
-description: Extracts text and tables from PDF files, fills forms, and merges documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
+```yaml  theme={null}
+description: Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
 ```
 
-Include both what the Skill does and when to use it in the description. **Always write in third person.**
+Include both what the Skill does and when to use it in the description.
 
 ### Verify file path
 
@@ -275,7 +256,7 @@ claude --debug
 
 ## Share Skills with your team
 
-**Recommended approach**: Distribute Skills through [plugins](https://code.claude.com/docs/en/plugins).
+**Recommended approach**: Distribute Skills through [plugins](/en/docs/claude-code/plugins).
 
 To share Skills via plugin:
 
@@ -283,7 +264,7 @@ To share Skills via plugin:
 2. Add the plugin to a marketplace
 3. Team members install the plugin
 
-For complete instructions, see [Add Skills to your plugin](https://code.claude.com/docs/en/plugins#add-skills-to-your-plugin).
+For complete instructions, see [Add Skills to your plugin](/en/docs/claude-code/plugins#add-skills-to-your-plugin).
 
 You can also share Skills directly through project repositories:
 
@@ -357,37 +338,23 @@ One Skill should address one capability:
 * "Document processing" (split into separate Skills)
 * "Data tools" (split by data type or operation)
 
-### Write clear descriptions in third person
+### Write clear descriptions
 
-Help Claude discover when to use Skills by including specific triggers in your description. **Always use third person.**
+Help Claude discover when to use Skills by including specific triggers in your description:
 
-**Clear (third person)**:
+**Clear**:
 
-```yaml
-description: Analyzes Excel spreadsheets, creates pivot tables, and generates charts. Use when working with Excel files, spreadsheets, or analyzing tabular data in .xlsx format.
+```yaml  theme={null}
+description: Analyze Excel spreadsheets, create pivot tables, and generate charts. Use when working with Excel files, spreadsheets, or analyzing tabular data in .xlsx format.
 ```
 
-**Vague / wrong person**:
+**Vague**:
 
-```yaml
+```yaml  theme={null}
 description: For files
-description: I help with spreadsheets
 ```
 
-### Keep SKILL.md concise
-
-- **Keep SKILL.md body under 500 lines** for optimal performance
-- Split complex content into separate files using progressive disclosure
-- Avoid deeply nested references - keep one level deep from SKILL.md
-- For reference files over 100 lines, include a table of contents
-
-### Use correct naming conventions
-
-- Use **gerund form** (verb + -ing): `processing-pdfs`, `analyzing-spreadsheets`
-- **Lowercase letters, numbers, and hyphens only**
-- Cannot contain reserved words ("anthropic", "claude")
-
-### Test with your team and multiple models
+### Test with your team
 
 Have teammates use Skills and provide feedback:
 
@@ -395,13 +362,11 @@ Have teammates use Skills and provide feedback:
 * Are the instructions clear?
 * Are there missing examples or edge cases?
 
-Test with different models (Haiku, Sonnet, Opus) as effectiveness may vary.
-
 ### Document Skill versions
 
 You can document Skill versions in your SKILL.md content to track changes over time. Add a version history section:
 
-```markdown
+```markdown  theme={null}
 # My Skill
 
 ## Version History
@@ -411,13 +376,6 @@ You can document Skill versions in your SKILL.md content to track changes over t
 ```
 
 This helps team members understand what changed between versions.
-
-### Use forward slashes for file paths
-
-Always use Unix-style forward slashes, even on Windows:
-
-- ✓ **Good**: `scripts/helper.py`, `reference/guide.md`
-- ✗ **Avoid**: `scripts\helper.py`, `reference\guide.md`
 
 ## Troubleshooting
 
@@ -521,9 +479,9 @@ commit-helper/
 └── SKILL.md
 ```
 
-```yaml
+```yaml  theme={null}
 ---
-name: generating-commit-messages
+name: Generating Commit Messages
 description: Generates clear commit messages from git diffs. Use when writing commit messages or reviewing staged changes.
 ---
 
@@ -550,10 +508,10 @@ code-reviewer/
 └── SKILL.md
 ```
 
-```yaml
+```yaml  theme={null}
 ---
-name: reviewing-code
-description: Reviews code for best practices and potential issues. Use when reviewing code, checking PRs, or analyzing code quality.
+name: Code Reviewer
+description: Review code for best practices and potential issues. Use when reviewing code, checking PRs, or analyzing code quality.
 allowed-tools: Read, Grep, Glob
 ---
 
@@ -589,10 +547,10 @@ pdf-processing/
 
 **SKILL.md**:
 
-````yaml
+````yaml  theme={null}
 ---
-name: processing-pdfs
-description: Extracts text, fills forms, and merges PDFs. Use when working with PDF files, forms, or document extraction. Requires pypdf and pdfplumber packages.
+name: PDF Processing
+description: Extract text, fill forms, merge PDFs. Use when working with PDF files, forms, or document extraction. Requires pypdf and pdfplumber packages.
 ---
 
 # PDF Processing
@@ -626,15 +584,15 @@ Claude loads additional files only when needed.
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Authoring best practices" icon="lightbulb" href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices">
+  <Card title="Authoring best practices" icon="lightbulb" href="/en/docs/agents-and-tools/agent-skills/best-practices">
     Write Skills that Claude can use effectively
   </Card>
 
-  <Card title="Agent Skills overview" icon="book" href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview">
+  <Card title="Agent Skills overview" icon="book" href="/en/docs/agents-and-tools/agent-skills/overview">
     Learn how Skills work across Claude products
   </Card>
 
-  <Card title="Get started with Agent Skills" icon="rocket" href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/quickstart">
+  <Card title="Get started with Agent Skills" icon="rocket" href="/en/docs/agents-and-tools/agent-skills/quickstart">
     Create your first Skill
   </Card>
 </CardGroup>
