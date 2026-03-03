@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = []
 # ///
-"""Ruff linting validator for builder agent PostToolUse hook.
+"""Ruff linting validator for implementer agent PostToolUse hook.
 
 Runs `ruff check` on Python files after Write/Edit operations.
 Always exits 0 to avoid blocking Claude Code.

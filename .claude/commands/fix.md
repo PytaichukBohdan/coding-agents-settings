@@ -141,7 +141,7 @@ This creates commitment. Skipping this step = likely to skip other steps.
    - Verify the fix resolves the issue
    - Document what was changed
    - `TaskUpdate` to `completed`
-   - For independent blocker fixes (different files), optionally deploy parallel builder agents via `Task` (see Team Orchestration)
+   - For independent blocker fixes (different files), optionally deploy parallel implementer agents via `Task` (see Team Orchestration)
 
 5. **Fix High Risk Issues** - For each HIGH RISK issue:
    - `TaskUpdate` to `in_progress`
@@ -181,9 +181,9 @@ For reviews with many issues, you can deploy sub-agents to parallelize independe
 
 ### Optional Team Members
 
-- **fixer-builder** (builder agent)
+- **fixer-implementer** (implementer agent)
   - Role: Parallel code fixes for independent issues in different files
-  - Agent Type: `builder`
+  - Agent Type: `implementer`
   - Deployed via `Task` tool with `run_in_background: true`
 
 - **fixer-validator** (validator agent)
@@ -193,21 +193,21 @@ For reviews with many issues, you can deploy sub-agents to parallelize independe
 
 ### Parallel Fix Pattern
 
-When multiple issues are in different files, deploy parallel builder agents:
+When multiple issues are in different files, deploy parallel implementer agents:
 
 ```typescript
-// 1. Deploy parallel builders for independent fixes
+// 1. Deploy parallel implementers for independent fixes
 Task({
   description: "Fix BLOCKER #1 in src/api/auth.ts",
   prompt: "Fix the SQL injection vulnerability in src/api/auth.ts lines 45-52. Apply parameterized queries. Verify the fix by checking the query construction.",
-  subagent_type: "builder",
+  subagent_type: "implementer",
   run_in_background: true
 })
 
 Task({
   description: "Fix BLOCKER #2 in src/config/secrets.ts",
   prompt: "Remove hardcoded credentials from src/config/secrets.ts lines 12-15. Replace with environment variable references. Verify no secrets remain.",
-  subagent_type: "builder",
+  subagent_type: "implementer",
   run_in_background: true
 })
 

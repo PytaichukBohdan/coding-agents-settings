@@ -19,7 +19,7 @@ PATH_TO_PLAN: $ARGUMENTS
   - If you have not run any validation commands throughout your implementation, DO NOT STOP until you have validated the work.
   - Your implementation should end with executing the validation commands to validate the work, if there are issues, fix them before stopping.
 - Follow the `Spec Status Update Protocol` below to update the plan file in real-time as you work.
-- For complex plans with a `## Team Orchestration` section, use Task tools (`TaskCreate`, `TaskUpdate`, `TaskList`, `TaskGet`) to deploy team agents (builder, validator) for assigned tasks. Delegate work to `.claude/agents/team/*.md` agents as defined in the orchestration section.
+- For complex plans with a `## Team Orchestration` section, use Task tools (`TaskCreate`, `TaskUpdate`, `TaskList`, `TaskGet`) to deploy team agents (implementer, validator) for assigned tasks. Delegate work to `.claude/agents/team/*.md` agents as defined in the orchestration section.
 - **Skill reference**: Follow the `verification-before-completion` skill before claiming completion.
 
 ## The Iron Law
@@ -150,10 +150,10 @@ This creates commitment. Skipping this step = likely to skip other steps.
   - Implement the entire plan top to bottom before stopping.
 
 - If the plan has a `## Team Orchestration` section, use Task tools to deploy team agents for assigned tasks:
-  - Use `TaskCreate` to create tasks for builder/validator agents as defined in the orchestration section
+  - Use `TaskCreate` to create tasks for implementer/validator agents as defined in the orchestration section
   - Use `TaskList` and `TaskGet` to monitor progress of delegated tasks
   - Use `TaskUpdate` to update coordination status
-  - Team agents are defined in `.claude/agents/team/*.md` (builder, validator)
+  - Team agents are defined in `.claude/agents/team/*.md` (implementer, validator)
 
 - Update spec status fields as you work using the `Spec Status Update Protocol` above.
 - Run validation commands before claiming completion per the `Verification Gate`.
@@ -166,5 +166,5 @@ This creates commitment. Skipping this step = likely to skip other steps.
 
 | Phase/Task | Assigned Agent | Status |
 |------------|---------------|--------|
-| [phase/task name] | [self / builder / validator] | completed / blocked / skipped |
+| [phase/task name] | [self / implementer / validator] | completed / blocked / skipped |
 | ... | ... | ... |

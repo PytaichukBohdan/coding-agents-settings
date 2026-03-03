@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = []
 # ///
-"""Type-checking validator for builder agent PostToolUse hook.
+"""Type-checking validator for implementer agent PostToolUse hook.
 
 Runs `ty check` on Python files after Write/Edit operations.
 Always exits 0 to avoid blocking Claude Code.

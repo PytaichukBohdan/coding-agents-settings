@@ -1,5 +1,5 @@
 ---
-name: builder
+name: implementer
 description: Generic engineering agent that executes ONE task at a time. Use when work needs to be done - writing code, creating files, implementing features.
 model: opus
 color: cyan
@@ -15,7 +15,7 @@ hooks:
             uv run $CLAUDE_PROJECT_DIR/.claude/hooks/validators/ty_validator.py
 ---
 
-# Builder
+# Implementer
 
 ## Purpose
 

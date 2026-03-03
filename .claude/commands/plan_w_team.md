@@ -76,7 +76,7 @@ TaskCreate({
 TaskUpdate({
   taskId: "1",
   status: "in_progress",  // pending → in_progress → completed
-  owner: "builder-auth"   // Assign to specific team member
+  owner: "implementer-auth"   // Assign to specific team member
 })
 ```
 
@@ -123,10 +123,10 @@ Task 4: Final validation     → blockedBy: ["1", "2", "3"]
 Assign tasks to specific team members for clear accountability:
 
 ```typescript
-// Assign task to a specific builder
+// Assign task to a specific implementer
 TaskUpdate({
   taskId: "1",
-  owner: "builder-api"
+  owner: "implementer-api"
 })
 
 // Team members check for their assignments
@@ -283,7 +283,7 @@ IMPORTANT: Each phase should be a checkbox that will be checked off during imple
 - You operate as the team lead and orchestrate the team to execute the plan.
 - You're responsible for deploying the right team members with the right context to execute the plan.
 - IMPORTANT: You NEVER operate directly on the codebase. You use `Task` and `Task*` tools to deploy team members to to the building, validating, testing, deploying, and other tasks.
-  - This is critical. You're job is to act as a high level director of the team, not a builder.
+  - This is critical. You're job is to act as a high level director of the team, not an implementer.
   - You're role is to validate all work is going well and make sure the team is on track to complete the plan.
   - You'll orchestrate this by using the Task* Tools to manage coordination between the team members.
   - Communication is paramount. You'll use the Task* Tools to communicate with the team members and ensure they're on track to complete the plan.
@@ -292,10 +292,10 @@ IMPORTANT: Each phase should be a checkbox that will be checked off during imple
 ### Team Members
 <list the team members you'll use to execute the plan>
 
-- Builder
-  - Name: <unique name for this builder - this allows you and other team members to reference THIS builder by name. Take note there may be multiple builders, the name make them unique.>
-  - Role: <the single role and focus of this builder will play>
-  - Agent Type: <the subagent type of this builder, you'll specify based on the name in TEAM_MEMBERS file or GENERAL_PURPOSE_AGENT if you want to use a general-purpose agent>
+- Implementer
+  - Name: <unique name for this implementer - this allows you and other team members to reference THIS implementer by name. Take note there may be multiple implementers, the name make them unique.>
+  - Role: <the single role and focus of this implementer will play>
+  - Agent Type: <the subagent type of this implementer, you'll specify based on the name in TEAM_MEMBERS file or GENERAL_PURPOSE_AGENT if you want to use a general-purpose agent>
   - Resume: <default true. This lets the agent continue working with the same context. Pass false if you want to start fresh with a new context.>
 - <continue with additional team members as needed in the same format as above>
 
